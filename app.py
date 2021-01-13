@@ -49,4 +49,85 @@ def main(stdscr):
         elif key == 27:
             break
 
-curses.wrapper(main)
+# curses.wrapper(main)
+
+def step (in_state):
+    out_state = [[1 for x in range(len(in_state))] for y in range(len(in_state[0]))]
+
+    for y in range(len(in_state)):
+        
+        for x in range(len(in_state[y])):
+            current_node = 0
+
+            # print(f'x {x} y {y}')
+
+            if y == 0:
+                current_node += in_state[y + 1][x] -1
+                if x == 0:
+                    current_node += in_state[y + 1][x + 1] -1
+                    current_node += in_state[y][x + 1] -1
+                elif x == len(in_state) - 1:
+                    current_node += in_state[y - 1][x - 1] -1
+                    current_node += in_state[y][x - 1] -1
+                else:
+                    current_node += in_state[y + 1][x + 1] -1
+                    current_node += in_state[y][x + 1] -1
+                    current_node += in_state[y - 1][x - 1] -1
+                    current_node += in_state[y][x - 1] -1
+            elif y == len(in_state[y]) - 1:
+                current_node += in_state[y - 1][x] -1
+                if x == 0:
+                    current_node += in_state[y - 1][x + 1] -1
+                    current_node += in_state[y][x + 1] -1
+                elif x == len(in_state) - 1:
+                    current_node += in_state[y - 1][x - 1] -1
+                    current_node += in_state[y][x - 1] -1
+                else:
+                    current_node += in_state[y - 1][x + 1] -1
+                    current_node += in_state[y][x + 1] -1
+                    current_node += in_state[y - 1][x - 1] -1
+                    current_node += in_state[y][x - 1] -1
+            elif x == 0:
+                current_node += in_state[y - 1][x] -1
+                current_node += in_state[y - 1][x + 1] -1
+                current_node += in_state[y][x + 1] -1
+                current_node += in_state[y + 1][x + 1] -1
+                current_node += in_state[y + 1][x] -1
+            elif x == len(in_state) - 1:
+                current_node += in_state[y - 1][x] -1
+                current_node += in_state[y - 1][x - 1] -1
+                current_node += in_state[y][x - 1] -1
+                current_node += in_state[y + 1][x - 1] -1
+                current_node += in_state[y + 1][x] -1
+            else:
+                current_node += in_state[y][x + 1] -1
+                current_node += in_state[y][x - 1] -1
+                current_node += in_state[y + 1][x + 1] -1
+                current_node += in_state[y + 1][x] -1
+                current_node += in_state[y - 1][x + 1] -1
+                current_node += in_state[y - 1][x] -1
+                current_node += in_state[y + 1][x - 1] -1
+                current_node += in_state[y - 1][x - 1] -1
+
+            print(f'current state {in_state[y][x]} current_node {current_node}')
+
+            if in_state[y][x] == 2 and (current_node == 2 or current_node == 3):
+                out_state[y][x] = 2
+            elif in_state[y][x] == 1 and current_node == 3:
+                out_state[y][x] = 2
+
+            # print(f'current_node {current_node}')
+
+    print(in_state)
+
+    return out_state
+
+input = [[1, 1, 1, 1, 1],
+         [1, 1, 2, 1, 1],
+         [1, 1, 2, 1, 1],
+         [1, 1, 2, 1, 1],
+         [1, 1, 1, 1, 1]]
+
+print(input)
+
+print(step(input))
