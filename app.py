@@ -3,7 +3,7 @@ import curses
 def main(stdscr):
     w = 80
     h = 24
-    states = [[1 for x in range(w)] for y in range(h)]
+    states = [[0 for x in range(w)] for y in range(h)]
 
     screen_state = 'welcome'
 
@@ -32,19 +32,19 @@ def main(stdscr):
 
             # stdscr.addstr(0, 0, "({},{}))".format(y, x))
 
-            if states[y][x] == 1:
+            if states[y][x] == 0:
                 stdscr.attron(curses.color_pair(2))
                 stdscr.addch(y, x, " ")
                 stdscr.attroff(curses.color_pair(2))
 
-                states[y][x] = 2
+                states[y][x] = 1
 
-            elif states[y][x] == 2:
+            elif states[y][x] == 1:
                 stdscr.attron(curses.color_pair(1))
                 stdscr.addch(y, x, " ")
                 stdscr.attroff(curses.color_pair(1))
 
-                states[y][x] = 1
+                states[y][x] = 0
 
         elif key == 27:
             break
@@ -52,7 +52,7 @@ def main(stdscr):
 # curses.wrapper(main)
 
 def step (in_state):
-    out_state = [[1 for x in range(len(in_state))] for y in range(len(in_state[0]))]
+    out_state = [[0 for x in range(len(in_state))] for y in range(len(in_state[0]))]
 
     for y in range(len(in_state)):
         
@@ -62,59 +62,59 @@ def step (in_state):
             # print(f'x {x} y {y}')
 
             if y == 0:
-                current_node += in_state[y + 1][x] -1
+                current_node += in_state[y + 1][x]
                 if x == 0:
-                    current_node += in_state[y + 1][x + 1] -1
-                    current_node += in_state[y][x + 1] -1
+                    current_node += in_state[y + 1][x + 1]
+                    current_node += in_state[y][x + 1]
                 elif x == len(in_state) - 1:
-                    current_node += in_state[y - 1][x - 1] -1
-                    current_node += in_state[y][x - 1] -1
+                    current_node += in_state[y - 1][x - 1]
+                    current_node += in_state[y][x - 1]
                 else:
-                    current_node += in_state[y + 1][x + 1] -1
-                    current_node += in_state[y][x + 1] -1
-                    current_node += in_state[y - 1][x - 1] -1
-                    current_node += in_state[y][x - 1] -1
+                    current_node += in_state[y + 1][x + 1]
+                    current_node += in_state[y][x + 1]
+                    current_node += in_state[y - 1][x - 1]
+                    current_node += in_state[y][x - 1]
             elif y == len(in_state[y]) - 1:
-                current_node += in_state[y - 1][x] -1
+                current_node += in_state[y - 1][x]
                 if x == 0:
-                    current_node += in_state[y - 1][x + 1] -1
-                    current_node += in_state[y][x + 1] -1
+                    current_node += in_state[y - 1][x + 1]
+                    current_node += in_state[y][x + 1]
                 elif x == len(in_state) - 1:
-                    current_node += in_state[y - 1][x - 1] -1
-                    current_node += in_state[y][x - 1] -1
+                    current_node += in_state[y - 1][x - 1]
+                    current_node += in_state[y][x - 1]
                 else:
-                    current_node += in_state[y - 1][x + 1] -1
-                    current_node += in_state[y][x + 1] -1
-                    current_node += in_state[y - 1][x - 1] -1
-                    current_node += in_state[y][x - 1] -1
+                    current_node += in_state[y - 1][x + 1]
+                    current_node += in_state[y][x + 1]
+                    current_node += in_state[y - 1][x - 1]
+                    current_node += in_state[y][x - 1]
             elif x == 0:
-                current_node += in_state[y - 1][x] -1
-                current_node += in_state[y - 1][x + 1] -1
-                current_node += in_state[y][x + 1] -1
-                current_node += in_state[y + 1][x + 1] -1
-                current_node += in_state[y + 1][x] -1
+                current_node += in_state[y - 1][x]
+                current_node += in_state[y - 1][x + 1]
+                current_node += in_state[y][x + 1]
+                current_node += in_state[y + 1][x + 1]
+                current_node += in_state[y + 1][x]
             elif x == len(in_state) - 1:
-                current_node += in_state[y - 1][x] -1
-                current_node += in_state[y - 1][x - 1] -1
-                current_node += in_state[y][x - 1] -1
-                current_node += in_state[y + 1][x - 1] -1
-                current_node += in_state[y + 1][x] -1
+                current_node += in_state[y - 1][x]
+                current_node += in_state[y - 1][x - 1]
+                current_node += in_state[y][x - 1]
+                current_node += in_state[y + 1][x - 1]
+                current_node += in_state[y + 1][x]
             else:
-                current_node += in_state[y][x + 1] -1
-                current_node += in_state[y][x - 1] -1
-                current_node += in_state[y + 1][x + 1] -1
-                current_node += in_state[y + 1][x] -1
-                current_node += in_state[y - 1][x + 1] -1
-                current_node += in_state[y - 1][x] -1
-                current_node += in_state[y + 1][x - 1] -1
-                current_node += in_state[y - 1][x - 1] -1
+                current_node += in_state[y][x + 1]
+                current_node += in_state[y][x - 1]
+                current_node += in_state[y + 1][x + 1]
+                current_node += in_state[y + 1][x]
+                current_node += in_state[y - 1][x + 1]
+                current_node += in_state[y - 1][x]
+                current_node += in_state[y + 1][x - 1]
+                current_node += in_state[y - 1][x - 1]
 
             print(f'current state {in_state[y][x]} current_node {current_node}')
 
-            if in_state[y][x] == 2 and (current_node == 2 or current_node == 3):
-                out_state[y][x] = 2
-            elif in_state[y][x] == 1 and current_node == 3:
-                out_state[y][x] = 2
+            if in_state[y][x] == 1 and (current_node == 2 or current_node == 3):
+                out_state[y][x] = 1
+            elif in_state[y][x] == 0 and current_node == 3:
+                out_state[y][x] = 1
 
             # print(f'current_node {current_node}')
 
@@ -122,11 +122,12 @@ def step (in_state):
 
     return out_state
 
-input = [[1, 1, 1, 1, 1],
-         [1, 1, 2, 1, 1],
-         [1, 1, 2, 1, 1],
-         [1, 1, 2, 1, 1],
-         [1, 1, 1, 1, 1]]
+input = [[0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 1, 0, 0],
+         [0, 1, 0, 0, 1, 0],
+         [0, 1, 0, 0, 1, 0],
+         [0, 0, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0]]
 
 print(input)
 
